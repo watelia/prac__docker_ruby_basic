@@ -1,8 +1,15 @@
-# frozen_string_literal: true
+require 'webrick'
 
-source = "http://rubygems.org"
+# これでアプリケーションコード
 
-git_source(: github) {|repo_name|
-"https://github.com/#{repo_name}" }
+server = WEBrick::HTTPServer.new(
+    DocumentRoot: './',
+    BindAddress: '0.0.0.0',
+    Port: 8000
+)
 
-gem "sinasta"
+server.mount_proc('/') do |req res|
+    res.body = 'hello'
+end
+
+server.start
